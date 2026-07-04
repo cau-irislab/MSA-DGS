@@ -2,26 +2,26 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Multi-Canonical Dynamic Gaussian Splatting for Accurate Geometry and High-Fidelity Rendering">
+  <meta name="description" content="Motion–Surface–Appearance Dynamic Gaussian Splatting for Accurate Geometry and High-Fidelity Rendering">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Multi-Canonical Dynamic Gaussian Splatting for Accurate Geometry and High-Fidelity Rendering"/>
-  <meta property="og:description" content="A unified framework that mitigates the trade-off between rendering fidelity and geometric accuracy in dynamic 3D Gaussian reconstruction via MCDM, SAAD, and RBER."/>
+  <meta property="og:title" content="Motion–Surface–Appearance Dynamic Gaussian Splatting for Accurate Geometry and High-Fidelity Rendering"/>
+  <meta property="og:description" content="A unified framework that resolves the rendering–geometry trade-off in dynamic Gaussian reconstruction by progressively improving motion, surface, and appearance via MCDM, SAAD, and RBER."/>
   <meta property="og:url" content=""/>
   <meta property="og:image" content="static/images/fig_teaser.png"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
 
   <!-- Twitter -->
-  <meta name="twitter:title" content="Multi-Canonical Dynamic Gaussian Splatting">
+  <meta name="twitter:title" content="Motion–Surface–Appearance Dynamic Gaussian Splatting">
   <meta name="twitter:description" content="A unified framework for accurate geometry and high-fidelity rendering of dynamic 3D scenes.">
   <meta name="twitter:image" content="static/images/fig_teaser.png">
   <meta name="twitter:card" content="summary_large_image">
 
-  <meta name="keywords" content="Dynamic 3D Gaussian Splatting, Novel View Synthesis, Mesh Reconstruction, MCDM, SAAD, RBER, Dynamic Scene Reconstruction">
+  <meta name="keywords" content="Dynamic Scene Reconstruction, Geometry Consistency, Gaussian Splatting, Multi-Canonical, Novel View Synthesis, Mesh Reconstruction, MCDM, SAAD, RBER">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Multi-Canonical Dynamic Gaussian Splatting</title>
+  <title>Motion–Surface–Appearance Dynamic Gaussian Splatting</title>
   <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
@@ -269,7 +269,7 @@
         <div class="column has-text-centered">
 
           <h1 class="title is-1 publication-title">
-            Multi-Canonical Dynamic Gaussian Splatting<br>
+            Motion–Surface–Appearance Dynamic Gaussian Splatting<br>
             for Accurate Geometry and High-Fidelity Rendering
           </h1>
 
@@ -301,7 +301,7 @@
             <div class="publication-links">
               <!-- Paper -->
               <span class="link-block">
-                <a href="https://github.com/cau-irislab/MC-DGS" target="_blank"
+                <a href="https://github.com/cau-irislab/MSA-DGS" target="_blank"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-file-pdf"></i></span>
                   <span>Paper (Coming Soon)</span>
@@ -310,7 +310,7 @@
 
               <!-- GitHub -->
               <span class="link-block">
-                <a href="https://github.com/cau-irislab/MC-DGS" target="_blank"
+                <a href="https://github.com/cau-irislab/MSA-DGS" target="_blank"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fab fa-github"></i></span>
                   <span>Code (Coming Soon)</span>
@@ -349,21 +349,23 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            While 3D Gaussian Splatting (3DGS) has enabled high-quality reconstruction of dynamic scenes,
-            a persistent tension remains between Novel View Synthesis (NVS) fidelity and mesh geometric accuracy.
-            We argue that this arises because deformation modeling, surface alignment, and appearance expressiveness
-            compete for shared representational degrees of freedom. To mitigate this rendering–geometry trade-off,
-            we propose <strong>Multi-Canonical Dynamic Gaussian Splatting</strong>.
+            Dynamic Gaussian Splatting (3DGS) has achieved impressive performance for dynamic scene reconstruction,
+            yet jointly improving rendering fidelity and mesh reconstruction remains challenging. This trade-off arises
+            because motion modeling, surface reconstruction, and appearance preservation are tightly coupled within a
+            shared Gaussian representation. To address this challenge, we propose
+            <strong>Motion–Surface–Appearance Dynamic Gaussian Splatting (MSA-DGS)</strong>, a unified framework that
+            progressively improves these three aspects of dynamic reconstruction.
           </p>
           <p>
-            <strong>Multi-Canonical Deformation Modeling (MCDM)</strong> partitions the sequence into localized
-            temporal segments to reduce motion over-smoothing.
-            <strong>Surface-Aligned Anisotropic Densification (SAAD)</strong> initializes 2D Gaussians with scales
-            and rotations derived from local face geometry for more faithful surface support.
-            <strong>Residual-Based Expressiveness Restoration (RBER)</strong> restores fine appearance details
-            through sequential 3D and 2D residual refinement on top of a geometry-stabilized base.
-            Experiments on DG-Mesh, D-NeRF, and Nerfies show that our method improves the rendering–geometry
-            balance, yielding consistent gains in rendering quality while preserving or improving mesh accuracy.
+            First, <strong>Multi-Canonical Deformation Modeling (MCDM)</strong> partitions the sequence into multiple
+            canonical Gaussian groups to better capture localized temporal deformation.
+            Second, <strong>Surface-Aligned Anisotropic Densification (SAAD)</strong> initializes new Gaussian primitives
+            according to local surface geometry, providing reliable surface support for mesh reconstruction.
+            Finally, <strong>Residual-Based Expressiveness Restoration (RBER)</strong> progressively restores fine
+            appearance details through geometry-space and image-space residual refinement while preserving the
+            established geometry. Extensive experiments on DG-Mesh, D-NeRF, and Nerfies demonstrate that the proposed
+            framework consistently achieves a better balance between rendering fidelity and mesh reconstruction than
+            existing methods.
           </p>
         </div>
       </div>
@@ -654,13 +656,15 @@ document.querySelectorAll('.mesh-frame-btns').forEach(function(btns) {
     <h2 class="title is-3 has-text-centered">Method</h2>
     <figure class="image" style="margin-bottom: 2.5rem;">
       <img src="static/images/fig_method.png"
-           alt="Overview of the proposed framework integrating MCDM, SAAD, and RBER.">
+           alt="Overview of the proposed MSA-DGS framework integrating MCDM, SAAD, and RBER.">
     </figure>
     <div class="content has-text-justified">
       <p>
-        Our pipeline integrates three core modules that progressively decouple the competing objectives
-        in dynamic Gaussian reconstruction — temporal deformation span, geometry-support formation,
-        and residual appearance modeling.
+        MSA-DGS integrates three core modules that progressively improve the three tightly coupled aspects
+        of dynamic Gaussian reconstruction — <em>motion</em> modeling, <em>surface</em> reconstruction, and
+        <em>appearance</em> preservation. A first stage establishes the base dynamic representation through
+        MCDM and SAAD, and a second stage applies RBER to restore fine appearance detail while preserving
+        the established geometry.
       </p>
 
       <div class="method-block">
@@ -684,12 +688,15 @@ document.querySelectorAll('.mesh-frame-btns').forEach(function(btns) {
 
       <div class="method-block">
         <strong>③ Residual-Based Expressiveness Restoration (RBER)</strong><br>
-        Recovers the fine-scale appearance capacity attenuated by strong surface supervision. Built on top
-        of the geometry-stabilized base, RBER employs two sequential residual stages: a 3D Gaussian
-        deformation residual network (<em>f<sub>DR</sub></em>) that applies local parameter corrections to each
-        Gaussian, followed by a 2D image residual branch using a Local Texture Estimator (<em>f<sub>LTE</sub></em>)
-        that recovers remaining high-frequency texture discrepancy. This restores appearance details
-        without compromising the geometric consistency established by MCDM and SAAD.
+        Recovers the fine appearance capacity attenuated by strong surface supervision through two
+        complementary residual refinements. <em>Geometry-space residual refinement</em> uses a residual
+        deformation network (<em>Φ<sub>GR</sub></em>) that predicts small corrections to the deformed
+        Gaussian parameters (position, rotation, scale), restoring appearance capacity around the
+        geometry-consistent solution. <em>Image-space residual refinement</em> then employs a residual
+        network (<em>Φ<sub>IR</sub></em>) that recovers the remaining high-frequency appearance discrepancy
+        directly in the rendered image via Fourier feature mapping on top of a frozen low-frequency base.
+        Together they restore appearance details without modifying the surface structure established by
+        MCDM and SAAD.
       </div>
     </div>
   </div>
@@ -777,8 +784,8 @@ document.querySelectorAll('.mesh-frame-btns').forEach(function(btns) {
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
     <pre><code>@article{TODO,
-  author  = {TODO},
-  title   = {Multi-Canonical Dynamic Gaussian Splatting for Accurate Geometry and High-Fidelity Rendering},
+  author  = {Seungjae Lee and Ho Jun Kim and Hak Gu Kim},
+  title   = {Motion--Surface--Appearance Dynamic Gaussian Splatting for Accurate Geometry and High-Fidelity Rendering},
   journal = {TODO},
   year    = {2025}
 }</code></pre>
